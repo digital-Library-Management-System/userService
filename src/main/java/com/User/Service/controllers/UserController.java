@@ -4,13 +4,12 @@ import com.User.Service.dto.UsersRequestDto;
 import com.User.Service.dto.UsersResponseDto;
 import com.User.Service.entities.Users;
 import com.User.Service.mappers.UsersMapper;
+import com.User.Service.services.UsersService;
 import com.User.Service.services.UsersServiceImpl;
 import lombok.RequiredArgsConstructor;
+import org.bson.types.ObjectId;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.time.ZoneOffset;
@@ -21,6 +20,7 @@ import java.time.ZoneOffset;
 public class UserController {
     private final UsersServiceImpl usersServiceImpl;
     private final UsersMapper usersMapper;
+    private final UsersService usersService;
 
     @PostMapping
     public ResponseEntity<UsersResponseDto> createBook(@RequestBody UsersRequestDto usersRequestDto){
@@ -33,6 +33,13 @@ public class UserController {
 
         return ResponseEntity.ok(response);
 
+    }
+
+    @GetMapping(path="{id}")
+    public ResponseEntity<UsersResponseDto> getUsersById(@PathVariable ObjectId id){
+        Users users = usersServiceImpl.getById(id);
+        UsersResponseDto responseDto = usersMapper.toDto(users);
+        return ResponseEntity.ok(responseDto);
     }
 
 }

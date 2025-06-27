@@ -16,6 +16,7 @@ import java.time.LocalDate;
 @NoArgsConstructor @AllArgsConstructor
 @Document(collection = "Users")
 public class Users {
+
     @Id
     private ObjectId id;
     private String name;
@@ -23,9 +24,5 @@ public class Users {
     private String memberShipType;
     private LocalDate registrationDate;
     private Boolean active;
-
-
-
-
 
 }
