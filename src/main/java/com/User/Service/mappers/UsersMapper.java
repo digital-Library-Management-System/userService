@@ -1,9 +1,9 @@
 package com.User.Service.mappers;
 
 
-import com.User.Service.dto.UsersRequestDto;
-import com.User.Service.dto.UsersResponseDto;
-import com.User.Service.entities.Users;
+import com.User.Service.dto.UserRequestDto;
+import com.User.Service.dto.UserResponseDto;
+import com.User.Service.entities.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -12,12 +12,12 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface UsersMapper {
 
-    @Mapping(target = "id", expression = "java(users.getId().toHexString())")
-    UsersResponseDto toDto(Users users);
+    @Mapping(target = "registrationDate", expression = "java(java.time.LocalDate.now(java.time.ZoneOffset.UTC))")
+    UserResponseDto toDto(User users);
 
-    @Mapping(target = "id", ignore = true)
-    Users toEntity(UsersRequestDto usersDto);
-    List<UsersResponseDto> toDtoList(List<Users> usersDto);
+    User toEntity(UserRequestDto usersDto);
+
+    List<UserResponseDto> toDtoList(List<User> usersDto);
 
 
 }
