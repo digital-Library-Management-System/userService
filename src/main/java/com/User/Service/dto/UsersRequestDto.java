@@ -9,11 +9,11 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@NoArgsConstructor @AllArgsConstructor
+@NoArgsConstructor
+@AllArgsConstructor
 public class UsersRequestDto {
 
     private String name;
     private String email;
     private String memberShipType;
-
 }

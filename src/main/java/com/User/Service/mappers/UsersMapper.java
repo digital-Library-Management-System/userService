@@ -12,12 +12,12 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface UsersMapper {
 
-    @Mapping(target = "id", expression = "java(users.getId().toHexString())")
     UsersResponseDto toDto(Users users);
 
     @Mapping(target = "id", ignore = true)
+    @Mapping(target = "registrationDate", expression = "java(java.time.LocalDate.now(java.time.ZoneOffset.UTC))")
+    @Mapping(target = "active", constant = "false")
     Users toEntity(UsersRequestDto usersDto);
+
     List<UsersResponseDto> toDtoList(List<Users> usersDto);
-
-
 }

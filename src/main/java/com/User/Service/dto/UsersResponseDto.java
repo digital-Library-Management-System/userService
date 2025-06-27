@@ -10,7 +10,8 @@ import java.time.LocalDate;
 
 @Getter
 @Setter
-@NoArgsConstructor @AllArgsConstructor
+@NoArgsConstructor
+@AllArgsConstructor
 public class UsersResponseDto {
 
     private String id;
