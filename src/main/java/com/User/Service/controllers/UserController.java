@@ -1,5 +1,7 @@
 package com.User.Service.controllers;
 
+import com.User.Service.BookClient;
+import com.User.Service.dto.BookResponseDto;
 import com.User.Service.dto.UserRequestDto;
 import com.User.Service.dto.UserResponseDto;
 import com.User.Service.entities.User;
@@ -19,6 +21,7 @@ public class UserController {
 
     private final UserServiceImpl usersServiceImpl;
     private final UserMapper userMapper;
+    private final BookClient bookClient;
 
 
     @PostMapping
@@ -32,13 +35,17 @@ public class UserController {
     }
 
     @GetMapping(path="{id}")
-    public ResponseEntity<UserResponseDto> getUserById(@PathVariable String id){
+    public ResponseEntity<UserResponseDto> getUserById(@PathVariable String id,
+                                                       @RequestParam int page, @RequestParam int size ){
 
         User users = usersServiceImpl.getById(id);
-        UserResponseDto responseDto = userMapper.toDto(users);
+
+        List<BookResponseDto> books =  bookClient.getAllBooks(page, size).getBody();
+        UserResponseDto responseDto =  userMapper.toDto(users,books);
 
         return ResponseEntity.ok(responseDto);
     }
+
 
     @GetMapping
     public ResponseEntity<List<UserResponseDto>> getAllUsers(@RequestParam int page, @RequestParam int size){

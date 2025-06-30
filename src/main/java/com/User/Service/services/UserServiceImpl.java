@@ -1,11 +1,14 @@
 package com.User.Service.services;
 
 
+import com.User.Service.BookClient;
+import com.User.Service.dto.BookResponseDto;
 import com.User.Service.entities.User;
 import com.User.Service.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -46,4 +49,5 @@ public class UserServiceImpl implements UserService {
 
         return listOfUsers;
     }
+
 }

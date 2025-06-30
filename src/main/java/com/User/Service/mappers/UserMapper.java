@@ -1,6 +1,7 @@
 package com.User.Service.mappers;
 
 
+import com.User.Service.dto.BookResponseDto;
 import com.User.Service.dto.UserRequestDto;
 import com.User.Service.dto.UserResponseDto;
 import com.User.Service.entities.User;
@@ -18,4 +19,7 @@ public interface UserMapper {
     User toEntity(UserRequestDto usersDto);
 
     List<UserResponseDto> toDtoList(List<User> usersDto);
+
+    @Mapping(target = "bookList", source = "books")
+    UserResponseDto toDto(User user, List<BookResponseDto> books);
 }
