@@ -1,6 +1,8 @@
 package com.User.Service.services;
 
 import com.User.Service.entities.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -11,5 +13,5 @@ public interface UserService {
 
      User getById(String id);
 
-     List<User> getAll(int page, int size);
+     Page<User> getAll(Pageable pageable);
 }

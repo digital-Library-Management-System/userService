@@ -6,7 +6,9 @@ import com.User.Service.dto.BookResponseDto;
 import com.User.Service.entities.User;
 import com.User.Service.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -38,16 +40,9 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new IllegalArgumentException( "user with id " + id + " does not exist"));
     }
 
-    public List<User> getAll(int page, int size){
+    public Page<User> getAll(Pageable pageable){
 
-        List<User> listOfUsers = usersRepository.findAll(PageRequest.of(page - 1, size)).getContent();
-
-        if (page < 1 || page > 2) throw new ResponseStatusException(HttpStatus.NOT_FOUND,
-                "the page must be between 1 and 2");
-        else if (size > 6) throw new ResponseStatusException(HttpStatus.NOT_FOUND,
-                "the size must be between 1 and 6");
-
-        return listOfUsers;
+        return usersRepository.findAll(pageable);
     }
 
 }

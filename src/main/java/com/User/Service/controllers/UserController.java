@@ -7,41 +7,40 @@ import com.User.Service.dto.UserResponseDto;
 import com.User.Service.entities.User;
 import com.User.Service.mappers.UserMapper;
 
-import com.User.Service.services.UserServiceImpl;
+import com.User.Service.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+
 
 @RestController
 @RequestMapping(path="userService")
 @RequiredArgsConstructor
 public class UserController {
 
-    private final UserServiceImpl usersServiceImpl;
     private final UserMapper userMapper;
     private final BookClient bookClient;
-
+    private final UserService userService;
 
     @PostMapping
     public ResponseEntity<UserResponseDto> createBook(@RequestBody UserRequestDto userRequestDto){
 
         User users = userMapper.toEntity(userRequestDto);
-        UserResponseDto response = userMapper.toDto(usersServiceImpl.addUsers(users));
+        UserResponseDto response = userMapper.toDto(userService.addUsers(users));
 
         return ResponseEntity.ok(response);
 
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserResponseDto> getUserById(@PathVariable String id,
-                                                       @RequestParam int page, @RequestParam int size ){
+    public ResponseEntity<UserResponseDto> getUserById(@PathVariable String id, Pageable pageable){
 
-        User users = usersServiceImpl.getById(id);
+        User users = userService.getById(id);
 
-        ResponseEntity<Page<BookResponseDto>> books =  bookClient.getAllBooks(page, size);
+        Page<BookResponseDto> books =  bookClient.getAllBooks(pageable);
         UserResponseDto responseDto =  userMapper.listToDto(users,books);
 
         return ResponseEntity.ok(responseDto);
@@ -49,12 +48,10 @@ public class UserController {
 
 
     @GetMapping
-    public ResponseEntity<List<UserResponseDto>> getAllUsers(@RequestParam int page, @RequestParam int size){
+    public Page<UserResponseDto> getAllUsers(Pageable pageable){
 
-        List<User> usersList = usersServiceImpl.getAll(page,size);
-        List<UserResponseDto> responseDto = userMapper.toDtoList(usersList);
-
-        return ResponseEntity.ok(responseDto);
+        Page<User> usersList = userService.getAll(pageable);
+        return usersList.map(userMapper::toDto);
     }
 
 }
