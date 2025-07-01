@@ -2,6 +2,7 @@ package com.User.Service;
 
 import com.User.Service.dto.BookResponseDto;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -12,5 +13,5 @@ import java.util.List;
 public interface BookClient {
 
     @GetMapping
-   ResponseEntity<List<BookResponseDto>> getAllBooks(@RequestParam int page, @RequestParam int size);
+    ResponseEntity<Page<BookResponseDto>> getAllBooks(@RequestParam int page, @RequestParam int size);
 }

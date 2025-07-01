@@ -7,6 +7,8 @@ import com.User.Service.dto.UserResponseDto;
 import com.User.Service.entities.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
@@ -20,6 +22,6 @@ public interface UserMapper {
 
     List<UserResponseDto> toDtoList(List<User> usersDto);
 
-    @Mapping(target = "bookList", source = "books")
-    UserResponseDto toDto(User user, List<BookResponseDto> books);
+    @Mapping(target = "bookList", expression = "java(books)")
+    UserResponseDto listToDto(User user, ResponseEntity<Page<BookResponseDto>> books);
 }

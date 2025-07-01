@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 
 import java.time.LocalDate;
@@ -21,5 +22,5 @@ public class UserResponseDto {
     private String memberShipType;
     private LocalDate registrationDate;
     private Boolean active;
-    private List<BookResponseDto> bookList;
+    private ResponseEntity<Page<BookResponseDto>> bookList;
 }

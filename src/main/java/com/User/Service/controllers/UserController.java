@@ -9,6 +9,7 @@ import com.User.Service.mappers.UserMapper;
 
 import com.User.Service.services.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,14 +35,14 @@ public class UserController {
 
     }
 
-    @GetMapping(path="{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<UserResponseDto> getUserById(@PathVariable String id,
                                                        @RequestParam int page, @RequestParam int size ){
 
         User users = usersServiceImpl.getById(id);
 
-        List<BookResponseDto> books =  bookClient.getAllBooks(page, size).getBody();
-        UserResponseDto responseDto =  userMapper.toDto(users,books);
+        ResponseEntity<Page<BookResponseDto>> books =  bookClient.getAllBooks(page, size);
+        UserResponseDto responseDto =  userMapper.listToDto(users,books);
 
         return ResponseEntity.ok(responseDto);
     }
