@@ -14,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 
 
 @RestController
@@ -40,8 +41,9 @@ public class UserController {
 
         User users = userService.getById(id);
 
-        Page<BookResponseDto> books =  bookClient.getAllBooks(pageable);
-        UserResponseDto responseDto =  userMapper.listToDto(users,books);
+        List<BookResponseDto> books =  bookClient.getAll(pageable);
+        UserResponseDto responseDto =  userMapper.toDto(users);
+        responseDto.setBookList(books);
 
         return ResponseEntity.ok(responseDto);
     }
@@ -52,6 +54,13 @@ public class UserController {
 
         Page<User> usersList = userService.getAll(pageable);
         return usersList.map(userMapper::toDto);
+    }
+
+    @GetMapping("noPagination")
+    public List<UserResponseDto> getAllUsersNoPagination(Pageable pageable){
+
+        List<User> user = userService.getAllUsersNoPagination(pageable);
+        return userMapper.toDtoList(user);
     }
 
 }
