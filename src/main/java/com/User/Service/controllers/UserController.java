@@ -51,7 +51,6 @@ public class UserController {
 
     @GetMapping
     public Page<UserResponseDto> getAllUsers(Pageable pageable){
-
         Page<User> usersList = userService.getAll(pageable);
         return usersList.map(userMapper::toDto);
     }
