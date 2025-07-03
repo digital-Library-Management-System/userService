@@ -45,4 +45,8 @@ public class UserServiceImpl implements UserService {
         return usersRepository.findAll(pageable);
     }
 
+    public List<User> getAllUsersNoPagination(Pageable pageable){
+        return usersRepository.findAll(pageable).getContent();
+    }
+
 }

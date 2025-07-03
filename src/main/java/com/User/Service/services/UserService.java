@@ -14,4 +14,6 @@ public interface UserService {
      User getById(String id);
 
      Page<User> getAll(Pageable pageable);
+
+     List<User> getAllUsersNoPagination(Pageable pageable);
 }
