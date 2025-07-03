@@ -40,8 +40,8 @@ public class UserController {
     public ResponseEntity<UserResponseDto> getUserById(@PathVariable String id, Pageable pageable){
 
         User users = userService.getById(id);
-
         List<BookResponseDto> books =  bookClient.getAll(pageable);
+
         UserResponseDto responseDto =  userMapper.toDto(users);
         responseDto.setBookList(books);
 
@@ -50,7 +50,7 @@ public class UserController {
 
 
     @GetMapping
-    public Page<UserResponseDto> getAllUsers(Pageable pageable){
+    public Page<UserResponseDto> getAllUsersWithPagination(Pageable pageable){
 
         Page<User> usersList = userService.getAll(pageable);
         return usersList.map(userMapper::toDto);
