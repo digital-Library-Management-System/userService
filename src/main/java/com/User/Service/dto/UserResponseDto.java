@@ -22,5 +22,5 @@ public class UserResponseDto {
     private String memberShipType;
     private LocalDate registrationDate;
     private Boolean active;
-    private Page<BookResponseDto> bookList;
+    private List<BookResponseDto> bookList;
 }

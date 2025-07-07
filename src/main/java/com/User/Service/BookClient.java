@@ -6,12 +6,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.GetMapping;
 
-
+import java.util.List;
 
 
 @FeignClient(name ="book-service", url = "http://localhost:8080", path = "/bookService")
 public interface BookClient {
 
-    @GetMapping
-    Page<BookResponseDto> getAllBooks(Pageable pageable);
+    @GetMapping("noPagination")
+    List<BookResponseDto> getAll(Pageable pageable);
 }

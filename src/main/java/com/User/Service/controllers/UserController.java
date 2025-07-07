@@ -14,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 
 
 @RestController
@@ -39,19 +40,27 @@ public class UserController {
     public ResponseEntity<UserResponseDto> getUserById(@PathVariable String id, Pageable pageable){
 
         User users = userService.getById(id);
+        List<BookResponseDto> books =  bookClient.getAll(pageable);
 
-        Page<BookResponseDto> books =  bookClient.getAllBooks(pageable);
-        UserResponseDto responseDto =  userMapper.listToDto(users,books);
+        UserResponseDto responseDto =  userMapper.toDto(users);
+        responseDto.setBookList(books);
 
         return ResponseEntity.ok(responseDto);
     }
 
 
     @GetMapping
-    public Page<UserResponseDto> getAllUsers(Pageable pageable){
+    public Page<UserResponseDto> getAllUsersWithPagination(Pageable pageable){
 
         Page<User> usersList = userService.getAll(pageable);
         return usersList.map(userMapper::toDto);
+    }
+
+    @GetMapping("noPagination")
+    public List<UserResponseDto> getAllUsersNoPagination(Pageable pageable){
+
+        List<User> user = userService.getAllUsersNoPagination(pageable);
+        return userMapper.toDtoList(user);
     }
 
 }
