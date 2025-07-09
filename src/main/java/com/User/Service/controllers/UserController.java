@@ -1,7 +1,5 @@
 package com.User.Service.controllers;
 
-import com.User.Service.BookClient;
-import com.User.Service.dto.BookResponseDto;
 import com.User.Service.dto.UserRequestDto;
 import com.User.Service.dto.UserResponseDto;
 import com.User.Service.entities.User;
@@ -10,6 +8,7 @@ import com.User.Service.mappers.UserMapper;
 import com.User.Service.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,11 +22,10 @@ import java.util.List;
 public class UserController {
 
     private final UserMapper userMapper;
-    private final BookClient bookClient;
     private final UserService userService;
 
     @PostMapping
-    public ResponseEntity<UserResponseDto> createBook(@RequestBody UserRequestDto userRequestDto){
+    public ResponseEntity<UserResponseDto> create(@RequestBody UserRequestDto userRequestDto){
 
         User users = userMapper.toEntity(userRequestDto);
         UserResponseDto response = userMapper.toDto(userService.addUsers(users));
@@ -40,26 +38,25 @@ public class UserController {
     public ResponseEntity<UserResponseDto> getUserById(@PathVariable String id, Pageable pageable){
 
         User users = userService.getById(id);
-        List<BookResponseDto> books =  bookClient.getAll(pageable);
-
-        UserResponseDto responseDto =  userMapper.toDto(users);
-        responseDto.setBookList(books);
+        UserResponseDto responseDto =  userMapper.toBookList(users, pageable);
 
         return ResponseEntity.ok(responseDto);
     }
 
 
     @GetMapping
-    public Page<UserResponseDto> getAllUsersWithPagination(Pageable pageable){
+    public Page<UserResponseDto> getAll(Pageable pageable){
 
-        Page<User> usersList = userService.getAll(pageable);
-        return usersList.map(userMapper::toDto);
+        Page<User> usersPage = userService.getAll(pageable);
+        List<UserResponseDto> dtoList = userMapper.toDtoList(usersPage.getContent());
+
+        return new PageImpl<>(dtoList, pageable, usersPage.getTotalElements());
     }
 
-    @GetMapping("noPagination")
-    public List<UserResponseDto> getAllUsersNoPagination(Pageable pageable){
+    @GetMapping("/all")
+    public List<UserResponseDto> getAllUsers(){
 
-        List<User> user = userService.getAllUsersNoPagination(pageable);
+        List<User> user = userService.getAllUsers();
         return userMapper.toDtoList(user);
     }
 

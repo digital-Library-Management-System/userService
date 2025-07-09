@@ -15,5 +15,5 @@ public interface UserService {
 
      Page<User> getAll(Pageable pageable);
 
-     List<User> getAllUsersNoPagination(Pageable pageable);
+     List<User> getAllUsers();
 }

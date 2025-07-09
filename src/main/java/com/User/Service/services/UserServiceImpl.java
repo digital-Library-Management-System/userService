@@ -2,6 +2,7 @@ package com.User.Service.services;
 
 
 
+import com.User.Service.dto.BookResponseDto;
 import com.User.Service.entities.User;
 import com.User.Service.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -41,8 +42,8 @@ public class UserServiceImpl implements UserService {
         return usersRepository.findAll(pageable);
     }
 
-    public List<User> getAllUsersNoPagination(Pageable pageable){
-        return usersRepository.findAll(pageable).getContent();
+    public List<User> getAllUsers(){
+        return usersRepository.findAll();
     }
 
 }

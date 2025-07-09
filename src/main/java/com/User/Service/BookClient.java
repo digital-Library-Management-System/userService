@@ -12,6 +12,6 @@ import java.util.List;
 @FeignClient(name ="book-service", url = "http://localhost:8080", path = "/bookService")
 public interface BookClient {
 
-    @GetMapping("noPagination")
+    @GetMapping("/all")
     List<BookResponseDto> getAll(Pageable pageable);
 }
