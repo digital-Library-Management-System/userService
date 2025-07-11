@@ -27,18 +27,18 @@ public class UserController {
     @PostMapping
     public ResponseEntity<UserResponseDto> create(@RequestBody UserRequestDto userRequestDto){
 
-        User users = userMapper.toEntity(userRequestDto);
-        UserResponseDto response = userMapper.toDto(userService.addUsers(users));
+        User user = userMapper.toEntity(userRequestDto);
+        UserResponseDto response = userMapper.toDto(userService.addUsers(user));
 
         return ResponseEntity.ok(response);
 
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserResponseDto> getUserById(@PathVariable String id, Pageable pageable){
+    public ResponseEntity<UserResponseDto> getUserById(@PathVariable String id){
 
-        User users = userService.getById(id);
-        UserResponseDto responseDto =  userMapper.toBookList(users, pageable);
+        User user = userService.getById(id);
+        UserResponseDto responseDto =  userMapper.toDto(user);
 
         return ResponseEntity.ok(responseDto);
     }
@@ -48,7 +48,13 @@ public class UserController {
     public Page<UserResponseDto> getAll(Pageable pageable){
 
         Page<User> usersPage = userService.getAll(pageable);
-        List<UserResponseDto> dtoList = userMapper.toDtoList(usersPage.getContent());
+
+        List<User> listOfUsers = usersPage.getContent();
+        for(User user : listOfUsers){
+           userMapper.toDto(user);
+        }
+
+        List<UserResponseDto> dtoList = userMapper.toDtoList(listOfUsers);
 
         return new PageImpl<>(dtoList, pageable, usersPage.getTotalElements());
     }

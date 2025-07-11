@@ -4,6 +4,7 @@ import com.User.Service.dto.BookResponseDto;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.List;
@@ -13,5 +14,5 @@ import java.util.List;
 public interface BookClient {
 
     @GetMapping("/all")
-    List<BookResponseDto> getAll(Pageable pageable);
+    List<BookResponseDto> getAll();
 }
